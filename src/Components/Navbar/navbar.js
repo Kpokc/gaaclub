@@ -8,13 +8,21 @@ export default class NavBar extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            isNarrow: window.innerWidth <= 1024
+            isNarrow: window.innerWidth <= 1024,
+            isMenuOpen: false,
         };
-        this.handleWidthChange = debounce(this.handleWidthChange.bind(this), 1000);
+        this.handleWidthChange = debounce(this.handleWidthChange.bind(this), 600);
+        this.toggleMenu = this.toggleMenu.bind(this);
     }
 
     handleWidthChange(isNarrow) {
         this.setState({ isNarrow });
+    }
+
+    toggleMenu(){
+        this.setState((prevState) => ({
+            isMenuOpen: !prevState.isMenuOpen
+        }));
     }
 
     render() {
@@ -22,6 +30,9 @@ export default class NavBar extends Component{
         return(
             <nav id="navbar" >
                 {/* <NavBar/> */}
+                <button className={`burger-menu ${!isNarrow ? 'narrow' : ''}`} onClick={this.toggleMenu}>
+                    &#9776;
+                </button>
                 <ul className="nav-menu">
                     {['Home', 'About', 'Services', 'Portfolio', 'Contact'].map((item, index) => (
                         <li key={index} className={isNarrow ? 'narrow' : ''}>
@@ -29,7 +40,6 @@ export default class NavBar extends Component{
                             <a href={`#${item.toLowerCase()}`} className={`btn btn--4`}  role="button" aria-label={item}>
                             
                             </a>
-                            {/* <button className="button-17" role="button">Button 17</button> */}
                         </li>
                     ))}
                 </ul>
